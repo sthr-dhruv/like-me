@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Just a Question 💗</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ffd6e8, #ff9acb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .card {
+      background: #fff;
+      padding: 50px 55px;
+      border-radius: 28px;
+      text-align: center;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.18);
+      width: 420px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 26px;
+      color: #333;
+    }
+
+    h2 {
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: 500;
+      color: #ff4f9a;
+    }
+
+    .buttons {
+      position: relative;
+      margin-top: 45px;
+      height: 120px; /* BIG SAFE AREA */
+    }
+
+    button {
+      width: 130px;
+      height: 48px;
+      border-radius: 999px;
+      border: none;
+      font-size: 16px;
+      position: absolute;
+      user-select: none;
+      touch-action: none; /* IMPORTANT for mobile */
+    }
+
+    #yesBtn {
+      left: 0;
+      background: #ff6fae;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #yesBtn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 12px 30px rgba(255,111,174,0.5);
+    }
+
+    #noBtn {
+      right: 0;
+      background: #ededed;
+      color: #555;
+      transition: transform 0.03s linear; /* VERY FAST SLIDE */
+      pointer-events: auto;
+    }
+
+    .message {
+      margin-top: 35px;
+      font-size: 22px;
+      color: #ff4f9a;
+      font-weight: 600;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Hey Meghna 💗</h1>
+    <h2>Do you like me?</h2>
+
+    <div class="buttons" id="area">
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
+    </div>
+
+    <div class="message" id="message">
+      I knew it 😌💖
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const area = document.getElementById("area");
+
+    let x = 0;
+    let y = 0;
+
+    function moveAway(px, py) {
+      const rect = noBtn.getBoundingClientRect();
+      const bx = rect.left + rect.width / 2;
+      const by = rect.top + rect.height / 2;
+
+      const dx = bx - px;
+      const dy = by - py;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+
+      // MOVE BEFORE CURSOR TOUCHES
+      if (dist < 150) {
+        x += (dx / dist) * 90;
+        y += (dy / dist) * 45;
+
+        x = Math.max(-260, Math.min(260, x));
+        y = Math.max(-60, Math.min(60, y));
+
+        noBtn.style.transform = `translate(${x}px, ${y}px)`;
+      }
+    }
+
+    // POINTER EVENTS = mouse + touch (BEST)
+    area.addEventListener("pointermove", e => {
+      moveAway(e.clientX, e.clientY);
+    });
+
+    // EXTRA SAFETY
+    noBtn.addEventListener("pointerdown", e => {
+      e.preventDefault();
+      x += (Math.random() > 0.5 ? 1 : -1) * 120;
+      y += (Math.random() - 0.5) * 60;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    // Block clicks completely
+    noBtn.addEventListener("click", e => e.preventDefault());
+
+    document.getElementById("yesBtn").addEventListener("click", () => {
+      document.getElementById("message").style.display = "block";
+    });
+  </script>
+
+</body>
+</html>
